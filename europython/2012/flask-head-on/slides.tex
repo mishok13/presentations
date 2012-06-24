@@ -1,43 +1,82 @@
-Diving into Flask (Head On)
+\documentclass{beamer}
+
+\mode<presentation>
+
+\title{Diving into Flask}
+
+\author[A. Mishkovskyi]{Andrii V. Mishkovskyi \\ \texttt{contact@mishkovskyi.net}}
+\date[EuroPython 2012]
+
+\begin{document}
+
+\begin{frame}
+\end{frame}
 
 
-celery
 
-how celery behaves with various
+\end{document}
 
-celery lack of init_app
+%% Diving into Flask (Head On)
 
-celery logging -- color formatting, hijacking root logger
+Intro
 
-detaching celery
+What we've built
 
-sqlalchemy and celery -- issues with pool (INVESTIGATE!!! postgres too)
+Based on our experience with social networks and pressing necessity
+in integrating with other social networks, we have decided to create
+a unifying API. It's similar to Janrein, Gigya and Spring Social in many
+ways, but being built in-house gives us some advantages over 3rd party
+solutions (read: MONEY)
+We have strict requirements in terms of availability and speed of
+development.
 
-flask URL routing with RESTful interfaces
+Decision for Flask
 
-reading forms is slow
-
-batching API -- how we did it
-
-sqlalchemy flask -- indices
-
-sqlalchemy migrate -- how to
-
-logging -- how to
-
-blueprints -- awesome
-
-caching -- werkzeug.contrib.cache and consistent hashing
+Flask started as an April's Fool joke, but look who's laughing now. Armin's not
+laughing, because he has to support it nowadays. But seriously, Flask is a very
+mature project nowadays and provides you with everything you need to
+modern build web applications. SQLAlchemy, no template needs, etc made flask
+a better option than Django.
 
 
-werkzeug routing -- how routes are compiled and methods checked
+%% celery
 
-filter and validate URL parameters
+%% how celery behaves with various
 
-uwsgi scaling (also talk about gunicorn)
+%% celery lack of init_app
 
-werkzeug profiler, flask-debugtoolbar
-memory?
-cache profiling?
-statsd integration
-(Sentry also?)
+%% celery logging -- color formatting, hijacking root logger
+
+
+%% detaching celery
+
+%% sqlalchemy and celery -- issues with pool (INVESTIGATE!!! postgres too)
+
+%% flask URL routing with RESTful interfaces
+
+%% reading forms is slow
+
+%% batching API -- how we did it
+
+%% sqlalchemy flask -- indices
+
+%% sqlalchemy migrate -- how to
+
+%% logging -- how to
+
+%% blueprints -- awesome
+
+%% caching -- werkzeug.contrib.cache and consistent hashing
+
+
+%% werkzeug routing -- how routes are compiled and methods checked
+
+%% filter and validate URL parameters
+
+%% uwsgi scaling (also talk about gunicorn)
+
+%% werkzeug profiler, flask-debugtoolbar
+%% memory?
+%% cache profiling?
+%% statsd integration
+%% (Sentry also?)

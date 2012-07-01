@@ -1,5 +1,7 @@
 \documentclass{beamer}
 
+\usepackage{listings}
+
 \mode<presentation>
 
 \title{Diving into Flask}
@@ -9,8 +11,128 @@
 
 \begin{document}
 
-\begin{frame}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fixed,
+  showspaces=false,
+  showstringspaces=false,
+}
+
+\section{Introduction}
+
+% Or should I do a "this guy" text + an arrow pointing to me?
+
+\begin{frame}{Who am I?}
+  \begin{itemize}
+  \item Developer for Hyves
+  \item Python fan
+  \item Heavy user of Flask (and Werkzeug in the past)
+  \end{itemize}
 \end{frame}
+
+\begin{frame}{What is Hyves?}
+  \begin{itemize}
+  \item Hyves is 2nd biggest social network in Netherlands
+  \item Hyves used to be exclusively PHP shop
+  \item Primarily Python nowadays
+  \item And primarily Flask
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why Flask?}
+  \only<1>{
+    \begin{center}
+      \LARGE{Yes, we also considered Django, Pyramid and many more}
+    \end{center}
+  }
+  \only<2>{
+    \begin{itemize}
+    \item Well-documented
+    \item Great API
+    \item Easily extendible
+    \end{itemize}
+  }
+\end{frame}
+
+\section{Exploring Flask}
+
+\subsection{Starting with the simplest}
+
+\begin{frame}[fragile]
+  \frametitle{The simplest of them all}
+  \only<1>{
+    \lstinputlisting[language=Python]{code/simplest.py}
+  }
+  \only<2>{
+    \lstinputlisting[language=Python,lastline=6,firstline=4]{code/simplest.py}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{\texttt{Flask.route}}
+  Figure out the HTTP methods, add the rule to the werkzeug.url\_map, done
+  The magic happens in the url\_map, we'll take a look at that a bit later
+\end{frame}
+
+
+\subsection{Going beyond tutorial}
+
+\subsection{Creating RESTful APIs}
+
+
+\begin{frame}
+  \frametitle{Flask and REST}
+\end{frame}
+
+\section{Flask and SQLAlchemy}
+
+
+\begin{frame}
+  \frametitle{Flask SQLAlchemy}
+  flask-sqlalchemy
+  apply\_driver\_hacks
+\end{frame}
+
+\begin{frame}
+  \frametitle{Migrations}
+  SQLAlchemy-migrate
+  Alembic
+\end{frame}
+
+% sharding & master/slave setup
+
+\section{Deferring your tasks}
+
+\subsection{Introducing celery}
+
+
+\begin{frame}
+  \frametitle{Intro into Celery}
+\end{frame}
+
+\subsection{On Celery and logging}
+
+\begin{frame}
+
+\end{frame}
+\subsection{Monitoring Celery}
+
+\begin{frame}
+
+\end{frame}
+
+\subsection{Celery and Flask-SQLAlchemy}
+
+\begin{frame}
+
+\end{frame}
+
+\section{Other niceties}
+
+
+
+\section*{Conclusion}
 
 
 
@@ -37,6 +159,88 @@ laughing, because he has to support it nowadays. But seriously, Flask is a very
 mature project nowadays and provides you with everything you need to
 modern build web applications. SQLAlchemy, no template needs, etc made flask
 a better option than Django.
+
+Flask's tutorial starts with a minimal example of an application
+Even though it looks nice, don't be fooled by it -- you're likely to
+grow out of one file as soon as you start putting real functionality
+into your application. But Flask doesn't stop being useful at this stage
+unlike some other frameworks (I'm looking at you, web.py). Flask has all
+the the required functionality to grow into enterprise level (sarcasm intended)
+
+Flask's REST support is great. Here you go:
+...
+You can also have class views (I'm not sure what's the latest Django view on those)
+...
+
+But what if you want to use Flask from JavaScript? Well, you either have to
+build your own dispatcher, or use _method trick:
+...
+
+But how does that work? Let's first dive a bit into how Werkzeug builds routes
+(after all it's werkzeug doing the actual route dispatch work):
+...
+As you can see, the last step is to build regexp and then matching an endpoint
+But how does method plays in here?
+
+...
+
+This is how you match a method. What if we want the POST handler
+to react to GET request based on a certain parameter. Flask makes it easy
+by using ``_method'' parameter:
+
+...
+
+Which translates to the following Werkzeug execution
+
+TODO: init_app() and extensions creation
+TODO: explain exthook and ext directory
+
+
+Now, most application will move on to having a proper template system,
+but we never needed that (except for admin) so I'm just going to skip
+straight to examining Celery. After all, the whole template thing is
+just plain simple.
+
+So, Celery. Celery's great at abstracting away from all the nitty gritty
+AMQP details. Well, not only AMQP, but you have to be batshit crazy to
+actually anything else, right? Wrong. Anyway, Celery does AMQP and a bunch
+of other backends, but our main focus here is how Flask-Celery actually works
+
+The whole Celery deserves its own talk, so vast and mostly unexplored it is.
+But we're going to take a look at how Flask-Celery achieves things
+
+...
+
+As we can see, there's not much to see, actually. Most of the code is
+responsible for creating proper commands for the app. If you have experience
+with Celery you'll note the lack of some commands, such as
+celeryd_detached.
+
+
+Celery also lack the init_app mechanism, which bites you in the back
+as soon as you do something like this:
+... show how you can't use tasks before app is initialized
+
+Fortunately, there's a fix for that, we don't use it though (but trust me,
+it works!):
+https://github.com/ask/flask-celery/pull/15
+
+But that's all nothing, we're not doing anything interesting yet.
+In general most tasks will be quite straightforward
+
+Monitoring
+
+Logging
+
+celeryd_detached
+
+SQLAlchemy and flask
+
+Flask is so minimal, that even
+
+Flask-SQLAlchemy gives you all the things you need, but how does it work?
+The binds for each model
+
 
 
 %% celery

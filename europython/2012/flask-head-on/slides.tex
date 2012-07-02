@@ -1,7 +1,9 @@
-\documentclass{beamer}
+\documentclass[17pt]{beamer}
 
 \usepackage{graphicx}
 \usepackage{listings}
+
+\usetheme{default}
 
 \mode<presentation>
 
@@ -14,7 +16,7 @@
 
 \lstset{
   language=Python,
-  basicstyle=\ttfamily,
+  basicstyle=\ttfamily\scriptsize,
   columns=fixed,
   showspaces=false,
   showstringspaces=false,
@@ -149,10 +151,14 @@
 
 \begin{frame}
   \frametitle{How do blueprints work}
-  \begin{itemize}
-  \item
+\only<1>{  \begin{itemize}
+  \item Basically a proxy object
+  \item That tracks if it was registered before
+  \item The only interesting details is URL registration
   \end{itemize}
-
+}
+\only<2>{\lstinputlisting{code/flask-blueprints-deferred-url-registration.py}}
+\only<3>{\lstinputlisting{code/flask-blueprints-realize-url-registration.py}}
 \end{frame}
 
 \section{Flask and SQLAlchemy}
@@ -160,9 +166,17 @@
 \subsection{Overview}
 
 \begin{frame}
-  \frametitle{Flask SQLAlchemy}
-  flask-sqlalchemy
-  apply\_driver\_hacks
+  \frametitle{Flask-SQLAlchemy}
+\only<1,3>{
+  \begin{itemize}
+  \item Full of magic
+  \item As in, dark magic
+  \item Say, would you guess what is the purpose of this?
+  \end{itemize}
+}
+\only<2>{
+  \lstinputlisting{code/flask-sqlalchemy-riddle.py}
+}
 \end{frame}
 
 \subsection{Partitioning}
@@ -282,15 +296,18 @@
   \frametitle{Process name}
   \begin{block}{Problem}
     Logging might brake if you want to setup logging beyond log message
-    format.
-  \end{block}
-  \begin{block}{Solution}
+    format. \only<1>{
     See \texttt{https://gist.github.com/721870}
     \begin{quotation}
       There are three places in the code where the processName is written to a
       LogRecord, some of which can lead to unexpected behaviour in some scenarios
   \end{quotation}
+}
   \end{block}
+\only<2>{  \begin{block}{Solution}
+    Avoid those scenarios.
+  \end{block}
+}
 \end{frame}
 
 \subsection{Monitoring Celery}
@@ -298,7 +315,7 @@
 % https://github.com/celery/django-celery/blob/master/djcelery/snapshot.py
 
 \begin{frame}
-  \frametitle{Take a look inside}
+  \frametitle{Keeping an eye on Celery}
 \only<1-2>{  \begin{itemize}
   \item Subclass \texttt{celery.events.snapshot.Polaroid}
     \only<1>{
@@ -306,7 +323,7 @@
     \item PROFIT
     }
     \only<2>{
-    \item Write \texttt{on\_shutter} method
+    \item Implement \texttt{on\_shutter} method
     \item Check various metrics
     \item Generate report in whatever format you need
     }
@@ -323,7 +340,7 @@
   \frametitle{Celery + SQLAlchemy + MySQL}
   \only<1>{
     \begin{block}{Problem}
-      Each time worker starts, infamous error is raised:
+      Each time worker starts, infamous \texttt{MySQL} error is raised:
       \begin{quotation}
         OperationalError:\\
         (2006, 'MySQL server has gone away')
@@ -384,14 +401,40 @@
   \begin{itemize}
   \item Wrote our own cache classes
   \item With namespace support
-  \item And consistent hashing (libketama + libredis)
+  \item And consistent hashing (based on libketama)
+  \item Also fixed and improved Python libredis wrapper
   \end{itemize}
 \end{frame}
 
 \subsection{Profiling}
 
 \begin{frame}
-  \frametitle{Profiling}
+  \frametitle{statsd}
+\only<1>{
+  \begin{itemize}
+  \item Use \texttt{python-statsd}
+  \item I have no more bullet points to add here
+  \item So, there
+  \item ...
+  \item A picture of a cat instead!
+  \end{itemize}
+}
+\only<2>{
+  \begin{center}
+    \includegraphics[scale=2.0]{images/bored-cat.jpg}
+  \end{center}
+}
+\only<3>{\lstinputlisting{code/statsd-example.py}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Flask-DebugToolbar}
+  \begin{itemize}
+  \item Direct port of Django's debug toolbar
+  \item Great at identifying bottlenecks
+  \item We also added memory profiling (Pympler)
+  \item Also: great example for blueprint-based plugin
+  \end{itemize}
 \end{frame}
 
 \section*{Conclusion}

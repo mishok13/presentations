@@ -1,5 +1,6 @@
 \documentclass{beamer}
 
+\usepackage{graphicx}
 \usepackage{listings}
 
 \mode<presentation>
@@ -12,6 +13,7 @@
 \begin{document}
 
 \lstset{
+  language=Python,
   basicstyle=\ttfamily,
   columns=fixed,
   showspaces=false,
@@ -32,8 +34,8 @@
 
 \begin{frame}{What is Hyves?}
   \begin{itemize}
-  \item Hyves is 2nd biggest social network in Netherlands
-  \item Hyves used to be exclusively PHP shop
+  \item The 2nd biggest social network in Netherlands
+  \item Used to be exclusively PHP shop
   \item Primarily Python nowadays
   \item And primarily Flask
   \end{itemize}
@@ -41,16 +43,16 @@
 
 \begin{frame}
   \frametitle{Why Flask?}
-  \only<1>{
+  \only<2>{
     \begin{center}
       \LARGE{Yes, we also considered Django, Pyramid and many more}
     \end{center}
   }
-  \only<2>{
+  \only<1>{
     \begin{itemize}
     \item Well-documented
     \item Great API
-    \item Easily extendible
+    \item Easily extendable
     \end{itemize}
   }
 \end{frame}
@@ -60,7 +62,7 @@
 \subsection{Starting with the simplest}
 
 \begin{frame}[fragile]
-  \frametitle{The simplest of them all}
+  \frametitle{This is where you start}
   \only<1>{
     \lstinputlisting[language=Python]{code/simplest.py}
   }
@@ -69,24 +71,72 @@
   }
 \end{frame}
 
+\subsection{Simple, yet powerful}
+
 \begin{frame}
   \frametitle{\texttt{Flask.route}}
-  Figure out the HTTP methods, add the rule to the werkzeug.url\_map, done
-  The magic happens in the url\_map, we'll take a look at that a bit later
+  \begin{itemize}
+  \item Simple decorator that calls Flask.add\_url\_rule
+  \item Which in turn passes the hard work to werkzeug.routing.Map
+  \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{URL matching and decomposition}
+  \only<1>{
+  \begin{itemize}
+  \item Rule creates regexp and collects proper converters
+  \item Map holds all rules and builds the string for Rule to match
+  \item Converters convert the path parts into Python objects
+  \end{itemize}
+}
+% Flask also tries to save some time matching URLs and sorts
+% Rules in specific order, see the key function for Rule
+\only<2>{EXAMPLES GOES HERE}
+\only<3>{Another interesting detail -- Map has Rules sorted in such way
+that rules that match faster will come first}
+\end{frame}
 
-\subsection{Going beyond tutorial}
-
-\subsection{Creating RESTful APIs}
-
+\subsection{Flask views}
 
 \begin{frame}
-  \frametitle{Flask and REST}
+  \frametitle{Manual dispatch}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Let Flask do all the hard work}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Class views? No problem!}
+\end{frame}
+
+\subsection{Blueprints}
+
+\begin{frame}
+  \frametitle{Modularity and Flask}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Introducing blueprints}
+  \begin{itemize}
+  \item Easier management of separate application modules (think API versions)
+  \item Instant win: namespaces
+  \item And much more
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How do blueprints work}
+  \begin{itemize}
+  \item
+  \end{itemize}
+
 \end{frame}
 
 \section{Flask and SQLAlchemy}
 
+\subsection{Overview}
 
 \begin{frame}
   \frametitle{Flask SQLAlchemy}
@@ -94,38 +144,201 @@
   apply\_driver\_hacks
 \end{frame}
 
+\subsection{Partitioning}
+
 \begin{frame}
-  \frametitle{Migrations}
-  SQLAlchemy-migrate
-  Alembic
+  \frametitle{SQLAlchemy and binds}
+\only<1>{
+  \begin{itemize}
+  \item Bind is the engine SQLAlchemy uses
+  \item Flask-SQLAlchemy gives the ability to specify the bind for each model
+  \end{itemize}
+}
+\only<2>{
+  \lstinputlisting{code/flask-sqlalchemy-bind-example.py}
+}
 \end{frame}
 
-% sharding & master/slave setup
+\begin{frame}
+  \frametitle{Flask-SQLAlchemy subclasses sqlalchemy.Session}
+  \lstinputlisting{code/flask-sqlalchemy-binds.py}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How do we achieve master-slave support?}
+  \only<1>{
+    \lstinputlisting[lastline=8]{code/flask-sqlalchemy-select-bind-explicitely.py}}
+  \only<2>{
+    \lstinputlisting[firstline=10,lastline=17]{code/flask-sqlalchemy-select-bind-explicitely.py}}
+  \only<3>{
+    \lstinputlisting[firstline=18]{code/flask-sqlalchemy-select-bind-explicitely.py}}
+  \only<4>{
+    \lstinputlisting{code/flask-sqlalchemy-bind-selection.py}
+  }
+\end{frame}
+
+\subsection{Migrations}
+
+\begin{frame}
+  \frametitle{SQLAlchemy-migrate}
+  \texttt{http://sqlalchemy-migrate.readthedocs.org/}
+  \begin{itemize}
+  \item Easy to start with
+  \item Decent documentation
+  \item Seems abandoned
+  \item Had to write a wrapper to run \texttt{migrate} utility
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Alembic}
+  \texttt{http://alembic.readthedocs.org/}
+  \begin{itemize}
+  \item 7 months ago seemed to be in alpha state
+  \item Much more mature right now
+  \item Great documentation, great implementation
+  \item Written by Mike Bayer himself
+  \end{itemize}
+\end{frame}
 
 \section{Deferring your tasks}
 
 \subsection{Introducing celery}
 
-
 \begin{frame}
-  \frametitle{Intro into Celery}
+  \frametitle{Celery features}
+  \begin{itemize}
+  \item Removes the hassle of using amqplib/pika
+  \item Extensive set of features
+  \item Confusing documentation
+  \end{itemize}
 \end{frame}
 
-\subsection{On Celery and logging}
+\begin{frame}
+  \frametitle{Flask-Celery}
+  \only<1>{
+    \begin{itemize}
+    \item You have to use Flask-Script
+    \item Most of the commands work
+    \item Except for starting detached celery daemons
+    \end{itemize}
+  }
+  \only<2>{\lstinputlisting{code/flask-celery-detached.py}}
+\end{frame}
+
+
+\subsection{Celery and logging}
 
 \begin{frame}
-
+  \frametitle{Color formatting}
+  \begin{block}{Problem}
+    Celery always resorts to ColorFormatter. We don't like colors.
+  \end{block}
+  \begin{block}{Solution}
+    Add \texttt{after\_setup\_logger} signal that reassigns all
+    logging formatters for Celery.
+  \end{block}
 \end{frame}
+
+\begin{frame}
+  \frametitle{OH HEY COLORZ}
+  \includegraphics[scale=0.5]{images/celery-colored.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Hijacking root logger}
+  \begin{block}{Problem}
+    Root logger is hijacked by Celery's logging setup, making your logging
+    setup useless.
+  \end{block}
+  \begin{block}{Solution}
+    Set \texttt{CELERYD\_HIJACK\_ROOT\_LOGGER} to \texttt{False}. Or better
+    yet, never use root logger.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Process name}
+  \begin{block}{Problem}
+    Logging might brake if you want to setup logging beyond log message
+    format.
+  \end{block}
+  \begin{block}{Solution}
+    See \texttt{https://gist.github.com/721870}
+    \begin{quotation}
+      There are three places in the code where the processName is written to a
+      LogRecord, some of which can lead to unexpected behaviour in some scenarios
+  \end{quotation}
+  \end{block}
+\end{frame}
+
 \subsection{Monitoring Celery}
 
-\begin{frame}
+% https://github.com/celery/django-celery/blob/master/djcelery/snapshot.py
 
+\begin{frame}
+  \frametitle{Take a look inside}
+\only<1-2>{  \begin{itemize}
+  \item Subclass \texttt{celery.events.snapshot.Polaroid}
+    \only<1>{
+    \item ???
+    \item PROFIT
+    }
+    \only<2>{
+    \item Write \texttt{on\_shutter} method
+    \item Check various metrics
+    \item Generate report in whatever format you need
+    }
+  \end{itemize}
+}
+\only<3>{
+  \lstinputlisting{code/celery-polaroid.py}
+}
 \end{frame}
 
 \subsection{Celery and Flask-SQLAlchemy}
 
 \begin{frame}
-
+  \frametitle{Celery + SQLAlchemy + MySQL}
+  \only<1>{
+    \begin{block}{Problem}
+      Each time worker starts, infamous error is raised:
+      \begin{quotation}
+        OperationalError:\\
+        (2006, 'MySQL server has gone away')
+      \end{quotation}
+    \end{block}
+    \begin{block}{Solution}
+      Drop the whole connection (engine) pool at worker init.
+    \end{block}
+  }
+  \only<2>{
+    \lstinputlisting{code/celery-drop-sqlalchemy-connections.py}
+  }
+  \only<3>{
+    \begin{block}{Problem}
+      Session not closed if exception happens middle-way through
+    \end{block}
+    \begin{block}{Solution}
+      Close the session in \texttt{task\_postrun} signal.
+    \end{block}
+  }
+  \only<4>{
+    \lstinputlisting{code/celery-close-session-unconditionally.py}
+  }
+  \only<5>{
+    \begin{block}{Problem}
+      Session still not closed properly if \alert{db object loses app context}.
+      Worker hangs too if that happens.
+    \end{block}
+    \begin{block}{Solution}
+      Close the session in \texttt{task\_postrun} signal \alert{but only
+        if there was an exception}.
+    \end{block}
+  }
+  \only<6>{
+    \lstinputlisting{code/celery-close-session-unconditionally-proper.py}
+  }
 \end{frame}
 
 \section{Other niceties}

@@ -43,11 +43,6 @@
 
 \begin{frame}
   \frametitle{Why Flask?}
-  \only<2>{
-    \begin{center}
-      \LARGE{Yes, we also considered Django, Pyramid and many more}
-    \end{center}
-  }
   \only<1>{
     \begin{itemize}
     \item Well-documented
@@ -55,6 +50,20 @@
     \item Easily extendable
     \end{itemize}
   }
+  \only<2>{
+    \begin{center}
+      \LARGE{Yes, we also considered Django, Pyramid and many more}
+    \end{center}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Presentation theme}
+  \begin{itemize}
+  \item Share our experience with Flask
+  \item Explore inner workings of some features
+  \item Understand why things break
+  \end{itemize}
 \end{frame}
 
 \section{Exploring Flask}
@@ -76,53 +85,63 @@
 \begin{frame}
   \frametitle{\texttt{Flask.route}}
   \begin{itemize}
-  \item Simple decorator that calls Flask.add\_url\_rule
-  \item Which in turn passes the hard work to werkzeug.routing.Map
+  \item Decorator that calls \texttt{Flask.add\_url\_rule}
+  \item \texttt{Flask.add\_url\_rule} creates \texttt{werkzeug.routing.Rule}
+    and adds it to \texttt{werkzeug.routing.Map}
+  \item \texttt{werkzeug.routing.Map} does the URL matching magic
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{URL matching and decomposition}
   \only<1>{
-  \begin{itemize}
-  \item Rule creates regexp and collects proper converters
-  \item Map holds all rules and builds the string for Rule to match
-  \item Converters convert the path parts into Python objects
-  \end{itemize}
-}
-% Flask also tries to save some time matching URLs and sorts
-% Rules in specific order, see the key function for Rule
-\only<2>{EXAMPLES GOES HERE}
-\only<3>{Another interesting detail -- Map has Rules sorted in such way
-that rules that match faster will come first}
+    \begin{itemize}
+    \item \texttt{Rule} creates regexp and collects proper converters
+    \item \texttt{Map} holds all rules and builds the string for Rule to match
+    \item \texttt{Converter}s convert the path parts into Python objects
+    \end{itemize}
+  }
+  % Flask also tries to save some time matching URLs and sorts
+  % Rules in specific order, see the key function for Rule
+  \only<2>{\lstinputlisting{code/flask-routing-example.py}}
+  \only<3>{\texttt{Rule}s are stored in \texttt{Map} in sorted order.
+    \lstinputlisting{code/flask-routing-rule-order.py}}
 \end{frame}
 
 \subsection{Flask views}
 
 \begin{frame}
   \frametitle{Manual dispatch}
+  \lstinputlisting{code/flask-routing-manual-dispatch.py}
 \end{frame}
 
 \begin{frame}
   \frametitle{Let Flask do all the hard work}
+  \lstinputlisting{code/flask-routing-function-level.py}
 \end{frame}
 
 \begin{frame}
   \frametitle{Class views? No problem!}
+  \lstinputlisting{code/flask-routing-class-based.py}
 \end{frame}
 
 \subsection{Blueprints}
 
 \begin{frame}
-  \frametitle{Modularity and Flask}
+  \frametitle{Modular Flask}
+  \begin{itemize}
+  \item More manageable
+  \item No more interference with other's work
+  \item Turnkey functionality implementations
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Introducing blueprints}
   \begin{itemize}
-  \item Easier management of separate application modules (think API versions)
-  \item Instant win: namespaces
-  \item And much more
+  \item We needed API versioning
+  \item Instant win: \texttt{url\_prefix}
+  \item
   \end{itemize}
 \end{frame}
 

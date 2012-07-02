@@ -330,6 +330,10 @@ that rules that match faster will come first}
     \begin{block}{Problem}
       Session still not closed properly if \alert{db object loses app context}.
       Worker hangs too if that happens.
+      \begin{quotation}
+        RuntimeError: application not registered on db instance
+        and no application bound to current context
+      \end{quotation}
     \end{block}
     \begin{block}{Solution}
       Close the session in \texttt{task\_postrun} signal \alert{but only
@@ -343,11 +347,56 @@ that rules that match faster will come first}
 
 \section{Other niceties}
 
+\subsection{Caching}
 
+\begin{frame}
+  \frametitle{Flask-Cache}
+  \begin{itemize}
+  \item More focused on caching views
+  \item Quite a few caching decorators
+  \item Otherwise -- thin wrapper around werkzeug.contrib.cache
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{But we're special!}
+  \begin{itemize}
+  \item Wrote our own cache classes
+  \item With namespace support
+  \item And consistent hashing (libketama + libredis)
+  \end{itemize}
+\end{frame}
+
+\subsection{Profiling}
+
+\begin{frame}
+  \frametitle{Profiling}
+\end{frame}
 
 \section*{Conclusion}
 
+\begin{frame}
+  \frametitle{Flask maturity}
+  \begin{itemize}
+  \item Flask is no longer an April Fool's joke
+  \item Still micro, but not in terms of features
+  \item You can and should build applications with Flask
+  \item Flask is easy to reason about
+  \end{itemize}
+\end{frame}
 
+\begin{frame}
+  \frametitle{Flask's ecosystem}
+  \begin{itemize}
+  \item Not on par with Flask in places
+  \item Interoperability is rough in places
+  \item Lack's BDFL for extensions (mitsuhiko for president!)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Questions?}
+\end{frame}
 
 \end{document}
 

@@ -262,7 +262,6 @@
 
 \begin{frame}
   \frametitle{SQLAlchemy-migrate}
-    \texttt{http://sqlalchemy-migrate.readthedocs.org/}
   \begin{itemize}
   \item Easy to start with
   \item Decent documentation
@@ -273,7 +272,6 @@
 
 \begin{frame}
   \frametitle{Alembic}
-  \texttt{http://alembic.readthedocs.org/}
   \begin{itemize}
   \item 7 months ago seemed to be in alpha state
   \item Much more mature right now
@@ -299,7 +297,7 @@
   \frametitle{Flask-Celery}
   \only<1>{
     \begin{itemize}
-    \item You have to use Flask-Script
+    \item Flask-Script is a requirement
     \item Most of the commands work
     \item Except for starting detached celery daemons
     \end{itemize}
@@ -314,7 +312,7 @@
 \only<1,3>{
   \frametitle{Color formatting}
   \begin{block}{Problem}
-    Celery always resorts to ColorFormatter. We don't like colors.
+    Celery always colorizes logs. We don't like colors.
   \end{block}
 \only<3>{
   \begin{block}{Solution}
@@ -324,7 +322,7 @@
 }
 }
 \only<2>{
-  \frametitle{OH HEY COLORZ}
+  \frametitle{OH HAI COLORZ}
   \includegraphics[scale=0.5]{images/celery-colored.png}
 }
 \end{frame}
@@ -456,7 +454,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{But we're special!}
+  \frametitle{Meh...}
   \begin{itemize}
   \item Wrote our own cache classes
   \item With namespace support
@@ -518,7 +516,9 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Questions?}
+  \begin{center}
+    \LARGE{Questions?}
+  \end{center}
 \end{frame}
 
 \end{document}

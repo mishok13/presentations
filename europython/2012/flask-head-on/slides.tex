@@ -85,7 +85,8 @@
 \subsection{Starting with the simplest}
 
 \begin{frame}[fragile]
-  \frametitle{Where we all started}
+\only<1,2>{  \frametitle{Where we all start}}
+\only<3>{\frametitle{Where some of us end up}}
   \only<1>{
     \lstinputlisting[language=Python]{code/simplest.py}
   }
@@ -185,7 +186,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{How do blueprints work}
+  \frametitle{How blueprints work}
 \only<1>{  \begin{itemize}
   \item Basically a proxy object
   \item That tracks if it was registered before

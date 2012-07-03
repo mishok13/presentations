@@ -1,3 +1,5 @@
 db.session.using_bind('slave').query(...)
+db.session.using_bind('master').query()
 
-AdminUsers.query_using('slave').all()
+AdminUser.query_using('admin-slave-1').all()
+AdminUser.query_using('admin-slave-2').all()
